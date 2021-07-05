@@ -16,7 +16,10 @@ def moran_params(n):
 
 def moran(x, cdf='uniform', args=()):
     '''
-    Calculates the Moran test
+    Calculates the Moran test and p-value approximation, as described in:
+    .. R. C. H. Cheng and M. A. Stephens, “A goodness-of-fit 
+       test using moran’s statistic with estimated parameters,
+       ”Biometrika, vol. 76, no. 2, pp. 385–392, 1989.
 
     Parameters:
     -----------
