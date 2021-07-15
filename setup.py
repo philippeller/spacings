@@ -16,7 +16,7 @@ setup(
     description='Spacings',
     long_description=long_description,
     long_description_content_type='text/markdown',
-
+    package_data={'rps_tables':['rps_tables/*.csv',]},
     python_requires='>=3.6',
 
     install_requires=[
