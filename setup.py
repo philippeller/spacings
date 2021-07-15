@@ -7,10 +7,10 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='spacings',
-    version='0.0.0',
+    version='0.0.2',
     packages=find_packages(),
     license='Apache 2.0',
-    author='Philipp Eller',
+    author='Philipp Elleri, Lolian Shtembari',
     author_email='peller.phys@gmail.com',
     url='https://github.com/philippeller/spacings',
     description='Spacings',
@@ -18,8 +18,10 @@ setup(
     long_description_content_type='text/markdown',
     package_data={'rps_tables':['rps_tables/*.csv',]},
     python_requires='>=3.6',
-
+    include_package_data=True,
+    zip_safe=False,
     install_requires=[
+        'distribute',
         'scipy>=0.17',
         'numpy>=1.11',
     ],
