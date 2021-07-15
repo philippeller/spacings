@@ -7,7 +7,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='spacings',
-    version='0.0.2',
+    version='0.0.3',
     packages=find_packages(),
     license='Apache 2.0',
     author='Philipp Elleri, Lolian Shtembari',
@@ -21,7 +21,6 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'distribute',
         'scipy>=0.17',
         'numpy>=1.11',
     ],
