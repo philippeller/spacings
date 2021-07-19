@@ -57,6 +57,9 @@ def moran(x, cdf='uniform', args=()):
     cdfvals = np.sort(cdfvals)
     cdfvals = np.concatenate([[0], cdfvals, [1]])
 
+    if np.any(np.diff(cdfvals) == 0):
+        return MorantestResult(0, 0)
+
     ts = -np.sum(np.log(np.diff(cdfvals)))
     c1, c2, mu, var = moran_params(N+1)
     a = (ts - c1)/c2

@@ -4,6 +4,7 @@ from scipy import interpolate
 from scipy.stats import distributions
 from numpy import genfromtxt
 import pkg_resources
+import warnings
 
 RPStestResult = namedtuple('RPStestResult', ('statistic', 'pvalue'))
 
@@ -106,7 +107,13 @@ def rps(x, cdf='uniform', args=()):
     cdfvals = np.sort(cdfvals)
     cdfvals = np.concatenate([[0], cdfvals, [1]])
 
+    if np.any(np.diff(cdfvals) == 0):
+        return RPStestResult(0, 0)
+
     ts = transformed_rps_ts(cdfvals)
+
+    if N > 1000:
+        warnings.warn('p-value calculation only implemented for sample sizes <= 1000')
 
     p = float(specific_RPS_norm_edge_p_value(N)(ts))
 
