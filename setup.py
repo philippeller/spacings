@@ -7,10 +7,10 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='spacings',
-    version='0.0.3',
+    version='0.0.4',
     packages=find_packages(),
     license='Apache 2.0',
-    author='Philipp Elleri, Lolian Shtembari',
+    author='Philipp Eller, Lolian Shtembari',
     author_email='peller.phys@gmail.com',
     url='https://github.com/philippeller/spacings',
     description='Spacings',

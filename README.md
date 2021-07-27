@@ -31,7 +31,7 @@ RPStestResult(statistic=0.9861622857523498, pvalue=0.6747286655166371)
 
 * Moran test:
 ```python
->>> moran(np.random.rand(100), "uniform")
+>>> moran(uniform, "uniform")
 MorantestResult(statistic=525.7712608675467, pvalue=0.3920410695917047)
 ```
 
