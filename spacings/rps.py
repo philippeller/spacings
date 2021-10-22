@@ -8,18 +8,18 @@ import warnings
 
 RPStestResult = namedtuple('RPStestResult', ('statistic', 'pvalue'))
 
-fit_data_x = np.genfromtxt(pkg_resources.resource_filename('spacings', 'rps_tables/RPS_norm_edge_table_fit_spline__p_to_x.csv'), delimiter=',')
-fit_data_p = np.genfromtxt(pkg_resources.resource_filename('spacings', 'rps_tables/RPS_norm_edge_table_fit_spline__x_to_p.csv'), delimiter=',')
+degree = int(np.genfromtxt(pkg_resources.resource_filename('spacings', 'rps_tables/long_1_RPS_table_fit_smoothing_degree.csv'), delimiter=',', skip_header=1)[1])
+data_knots = np.genfromtxt(pkg_resources.resource_filename('spacings', 'rps_tables/long_1_RPS_table_fit_Bspline_knots.csv'), delimiter=',', skip_header=1)
+data_coefficients = np.genfromtxt(pkg_resources.resource_filename('spacings', 'rps_tables/long_1_RPS_table_fit_Bspline_coefficients.csv'), delimiter=',', skip_header=1)
+p_vals = np.genfromtxt(pkg_resources.resource_filename('spacings', 'rps_tables/long_1_RPS_table_fit_p_values.csv'), delimiter=',', skip_header=1)
 
-N_fit = fit_data_x[0,1:]
-
-models_N_x = [interpolate.PchipInterpolator(np.log10(N_fit), fit_data_x[i, 1:]) for i in range(1, fit_data_x.shape[0])]
-models_N_p = [interpolate.PchipInterpolator(np.log10(N_fit), fit_data_p[i, 1:]) for i in range(1, fit_data_p.shape[0])]
+models = []
+for i in range(data_knots.shape[0]):
+    mask = data_knots[i, 1:] >= 0
+    models.append(interpolate.BSpline(data_knots[i, 1:][mask], data_coefficients[i, 1:][mask], degree))
 
 def get_x_vals(N):
-    return np.array([f(np.log10(N)) for f in models_N_x])
-def get_p_vals(N):
-    return np.array([f(np.log10(N)) for f in models_N_p])
+    return np.array([f(np.log10(N)) for f in models])
 
 def rps_ts(x):
     '''
@@ -53,17 +53,9 @@ def transformed_rps_ts(x):
     return -min_ts/ts
 
 def specific_RPS_norm_edge_p_value(N):
-    x2 = fit_data_p[1:,0]
-    p1 = fit_data_x[1:,0]
-    x1 = get_x_vals(N)
-    p2 = get_p_vals(N)
+    x_vals = get_x_vals(N)
     
-    x = np.concatenate([[0], x1, x2, [1]])
-    p = np.concatenate([[0], p1, p2, [1]])
-    
-    idxs = np.argsort(x)
-    
-    specific_cdf = interpolate.PchipInterpolator(x[idxs], p[idxs])
+    specific_cdf = interpolate.PchipInterpolator(np.concatenate([[0,], x_vals, [1.]]), np.concatenate([[0,], p_vals, [1.]]))
 
     return specific_cdf
 
